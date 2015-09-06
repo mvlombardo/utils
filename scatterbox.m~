@@ -34,13 +34,12 @@ function scatterbox(data2plot,Grp,boxColors,dotColors,MAKELINE,lineColors,yLabel
 %   written by mvlombardo - 05.09.2015
 %
 
-%% default settings
-fontSize = 12;          % set font size to 12
-fontWeight = 'b';       % set fonts to bold
+%% default settings for plotting stuff
+fontSize = 12;  
+fontWeight = 'b';       % 
 backgroundColor = 'w';  % background color for figure
 lineMarkerSymbol = ':'; % marker symbol default
 alphaLevel = 0.5;       % setting for line transparency
-jitter_sd = 0.02;       % setting for controlling how much jitter to add
 
 %% make a figure
 figure; 
@@ -52,7 +51,7 @@ hold on;
 
 % overlay scatterplot of individual dots for each data point
 uniqueGrps = unique(Grp);
-Grp_jitter = Grp + normrnd(0,jitter_sd,size(Grp,1),1); % introduces jitter on x-axis
+Grp_jitter = Grp + normrnd(0,0.02,size(Grp,1),1); % introduces jitter on x-axis
 if size(dotColors,1)==1
     s = scatter(Grp_jitter,data2plot);
     set(s,'MarkerFaceColor',dotColors,'MarkerEdgeColor',dotColors);
@@ -92,24 +91,20 @@ for itag = 1:length(tagNames)
 end % for itag
 
 % turn grid on and make axis square
-grid on; 
-axis square;
+grid on; axis square;
 
 %% make lines connecting paired data points
 if MAKELINE
-    % if line transparency wasn't specified, use the default value
     if size(lineColors,2)~=4
         lineColors = [lineColors alphaLevel];
     end % if size(lineColors,2)
     
-    % set up data for adding lines
     Xgrp = [];  Ydata = [];
     for i = 1:length(uniqueGrps)
         Xgrp = [Xgrp Grp_jitter(Grp==uniqueGrps(i))];
         Ydata = [Ydata data2plot(Grp==uniqueGrps(i))];
     end % for i
     
-    % add lines to the figure
     for i = 1:size(Ydata,1)
         hold on;
         h = plot(Xgrp(i,:),Ydata(i,:),lineMarkerSymbol);

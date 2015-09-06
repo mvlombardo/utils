@@ -22,18 +22,18 @@ def cohens_d(x, y, DIM='rows'):
     elif DIM == 'columns':
         dim = 1
 
-	# n-1 for x and y
+    # n-1 for x and y
     lx = x.shape[dim]-1
     ly = y.shape[dim]-1
 
-	# mean difference
+    # mean difference
     md = np.abs(np.mean(x, axis = dim, dtype = np.float64) - np.mean(y, axis = dim, dtype = np.float64))
 
-	# pooled variance
+    # pooled variance
     csd = (lx * np.var(x, axis = dim, dtype = np.float64)) + (ly * np.var(y, axis = dim, dtype = np.float64))
     csd = np.sqrt(csd/(lx + ly))
 	
-	# compute cohen's d
+    # compute cohen's d
     d  = md/csd
     
     return(d)

@@ -34,30 +34,37 @@ function scatterbox(data2plot,Grp,boxColors,dotColors,MAKELINE,lineColors,yLabel
 %   written by mvlombardo - 05.09.2015
 %
 
-%% default settings for plotting stuff
-fontSize = 12;  
-fontWeight = 'b';       % 
+%% default settings
+fontSize = 12;          % set font size to 12
+fontWeight = 'b';       % set fonts to bold
 backgroundColor = 'w';  % background color for figure
 lineMarkerSymbol = ':'; % marker symbol default
 alphaLevel = 0.5;       % setting for line transparency
+jitter_sd = 0.02;       % setting for controlling how much jitter to add
 
 %% make a figure
 figure; 
-set(gcf,'color',backgroundColor);
+set(gcf,'color',backgroundColor); % sets background color
 
 % create boxplot
 boxplot(data2plot,Grp);
 hold on; 
 
 % overlay scatterplot of individual dots for each data point
-uniqueGrps = unique(Grp);
-Grp_jitter = Grp + normrnd(0,0.02,size(Grp,1),1); % introduces jitter on x-axis
-if size(dotColors,1)==1
-    s = scatter(Grp_jitter,data2plot);
+uniqueGrps = unique(Grp);  % find number of unique groups
+
+% introduce jitter on x-axis
+Grp_jitter = Grp + normrnd(0,jitter_sd,size(Grp,1),1); 
+
+if size(dotColors,1)==1 % if you only want one color for all dots
+    s = scatter(Grp_jitter,data2plot); % make scatterplot
+    % change color on dots
     set(s,'MarkerFaceColor',dotColors,'MarkerEdgeColor',dotColors);
-else
+else % if you want different colors for different groups
     for i = 1:length(uniqueGrps)
+        % make scatterplot
         s = scatter(Grp_jitter(Grp==uniqueGrps(i)),data2plot(Grp==uniqueGrps(i)));
+        % change color on dots
         set(s,'MarkerFaceColor',dotColors(i,:),'MarkerEdgeColor',dotColors(i,:));
     end % for i
 end % if
@@ -68,19 +75,23 @@ ylabel(yLabel);
 % change x-axis tick labels and font size and weight
 set(gca,'XTickLabel',xLabels,'fontsize',fontSize,'fontweight',fontWeight);
 
-% change color of boxplot elements
+% turn grid on and make axis square
+grid on; 
+axis square;
+
+% edit boxplot elements
 tagNames = {'Outliers','Median','Box','Lower Adjacent Value','Upper Adjacent Value','Lower Whisker','Upper Whisker'};
 for itag = 1:length(tagNames)
     h = findobj(gca,'Tag',tagNames{itag});
     h_tmp = findobj(gca,'Tag',tagNames{length(tagNames)});
     
-    if strcmp(tagNames{itag},'Outliers')
+    if strcmp(tagNames{itag},'Outliers') % what to do for outliers
         for i = 1:length(xLabels)
             h(i).Marker = 'none'; % delete default outlier marker
         end % for i
-    else 
+    else % what 
         if size(boxColors,1)==1
-            set(h,'linewidth',2,'color',boxColors);
+            set(h,'linewidth',2,'color',boxColors); % change color on boxplot element
         else
             for i = 1:length(xLabels)
                 boxidx = h_tmp(i).XData(1);
@@ -90,21 +101,23 @@ for itag = 1:length(tagNames)
     end % if strcmp(tagNames{itag},'Outlier's)
 end % for itag
 
-% turn grid on and make axis square
-grid on; axis square;
+
 
 %% make lines connecting paired data points
 if MAKELINE
+    % if line transparency wasn't specified, use the default value
     if size(lineColors,2)~=4
         lineColors = [lineColors alphaLevel];
     end % if size(lineColors,2)
     
+    % set up data for adding lines
     Xgrp = [];  Ydata = [];
     for i = 1:length(uniqueGrps)
         Xgrp = [Xgrp Grp_jitter(Grp==uniqueGrps(i))];
         Ydata = [Ydata data2plot(Grp==uniqueGrps(i))];
     end % for i
     
+    % add lines to the figure
     for i = 1:size(Ydata,1)
         hold on;
         h = plot(Xgrp(i,:),Ydata(i,:),lineMarkerSymbol);

@@ -1,4 +1,4 @@
-function d = cohens_d(x,y,DIM)
+function d = cohens_d(x,y,DIM,NO_SIGN)
 % 
 % Function will compute cohen's d effect size.
 %
@@ -21,7 +21,11 @@ lx = size(x,DIM)-1;
 ly = size(y,DIM)-1;
 
 % mean difference (numerator)
-md = abs(nanmean(x,DIM) - nanmean(y,DIM));
+if NO_SIGN
+    md = abs(nanmean(x,DIM) - nanmean(y,DIM));
+else
+    md = nanmean(x,DIM) - nanmean(y,DIM);
+end
 
 % pooled variance (denominator)
 csd = (lx .* nanvar(x,0,DIM)) + (ly .* nanvar(y,0,DIM));

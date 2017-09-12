@@ -6,7 +6,7 @@ function d = cohens_d(x,y,DIM,NO_SIGN)
 %	x = matrix or vector
 %	y = matrix or vector
 %	DIM = specify the dimension which samples are along
-%   NO_SIGN = set to 1 to output effect size ignoring sign, 0 to output with the sign retained
+%   NO_SIGN = set to 1 to output effect size ignoring sign
 %
 % Example usage
 %

@@ -7,14 +7,14 @@ x = ndarray
 y = ndarray
 DIM = the dimension the samples are along
 
-OUTPUT 
+OUTPUT
 d = Cohen's d
 
 Written by mvlombardo 05.09.2015
 """
 
-def cohens_d(x, y, DIM='rows'):
-    
+def cohens_d(x, y, DIM='rows', SIGN=True):
+
     import numpy as np
 
     if DIM == 'rows':
@@ -27,13 +27,16 @@ def cohens_d(x, y, DIM='rows'):
     ly = y.shape[dim]-1
 
     # mean difference
-    md = np.abs(np.mean(x, axis = dim, dtype = np.float64) - np.mean(y, axis = dim, dtype = np.float64))
+    if SIGN:
+        md = np.mean(x, axis = dim, dtype = np.float64) - np.mean(y, axis = dim, dtype = np.float64)
+    else:
+        md = np.abs(np.mean(x, axis = dim, dtype = np.float64) - np.mean(y, axis = dim, dtype = np.float64))
 
     # pooled variance
     csd = (lx * np.var(x, axis = dim, dtype = np.float64)) + (ly * np.var(y, axis = dim, dtype = np.float64))
     csd = np.sqrt(csd/(lx + ly))
-	
+
     # compute cohen's d
     d  = md/csd
-    
+
     return(d)

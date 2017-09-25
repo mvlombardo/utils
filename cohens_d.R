@@ -38,14 +38,19 @@ cohens_d <- function(x, y, DIM=1, SIGN=TRUE) {
 		} else{
 			# mean difference (numerator)
 			md <- abs(colMeans(x) - colMeans(y))
-		}
+		}# if (SIGN)
 		# pooled variance (denominator), but before any sqrt is done
 		csd <- (lx * rowVars(t(x))) + (ly * rowVars(t(y)))
 
 	# else if samples are along the columns
 	} else if (DIM==2){
-		# mean difference (numerator)
-		md <- abs(rowMeans(x) - rowMeans(y))
+		if (SIGN){
+			# mean difference (numerator)
+			md <- rowMeans(x) - rowMeans(y)
+		} else{
+			# mean difference (numerator)
+			md <- abs(rowMeans(x) - rowMeans(y))
+		}# if (SIGN)
 		# pooled variance (denominator), but before any sqrt is done
 		csd <- lx * rowVars(x) + ly * rowVars(y)
 	}# end if

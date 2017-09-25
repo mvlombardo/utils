@@ -1,5 +1,5 @@
-cohens_d <- function(x, y, DIM=1) {
-# 
+cohens_d <- function(x, y, DIM=1, SIGN=TRUE) {
+#
 # Function will compute cohen's d effect size.
 # Generalized to work on either matrices, data frames, vectors
 #
@@ -19,7 +19,7 @@ cohens_d <- function(x, y, DIM=1) {
 
 	# if x and y are vectors, coerce them into matrices
 	if (class(x)=="numeric" | class(x)=="integer") {
-		x <- as.matrix(x)		
+		x <- as.matrix(x)
 	} # if
 
 	if (class(y)=="numeric" | class(y)=="integer") {
@@ -32,8 +32,13 @@ cohens_d <- function(x, y, DIM=1) {
 
 	# if samples are along the rows
 	if (DIM==1){
-		# mean difference (numerator)
-		md <- abs(colMeans(x) - colMeans(y))
+		if (SIGN){
+			# mean difference (numerator)
+			md <- colMeans(x) - colMeans(y)
+		} else{
+			# mean difference (numerator)
+			md <- abs(colMeans(x) - colMeans(y))
+		}
 		# pooled variance (denominator), but before any sqrt is done
 		csd <- (lx * rowVars(t(x))) + (ly * rowVars(t(y)))
 

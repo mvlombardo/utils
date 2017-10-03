@@ -76,7 +76,10 @@ def genesymbol2entrez(genelist, species = "human"):
         if not res["hits"]:
             res_list[gidx] = "NA"
         else:
-            entrez_geneid = res["hits"][0]["entrezgene"]
+            try:
+                entrez_geneid = res["hits"][0]["entrezgene"]
+            except:
+                entrez_geneid = res["hits"][1]["entrezgene"]
             res_list[gidx] = entrez_geneid
 
     return(res_list)

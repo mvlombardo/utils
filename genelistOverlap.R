@@ -17,11 +17,11 @@ genelistOverlap <- function(list1,list2,backgroundTotal) {
 	require(readxl)
 	require(tools)
 
-	# get the file extensions of list1 and list2-------------------------------
+	# get the file extensions of list1 and list2
 	ext1 = file_ext(list1)
 	ext2 = file_ext(list2)
 
-	# read in gene lists-------------------------------------------------------
+	# read in gene lists
 	# list 1
 	if (length(list1)!=1) {
 		genes1 = data.frame(list1)
@@ -48,21 +48,21 @@ genelistOverlap <- function(list1,list2,backgroundTotal) {
 		}# if
 	}# if
 
-	# Find overlapping genes---------------------------------------------------
+	# Find overlapping genes
 	gene_mask = is.element(genes1[,1],genes2[,1])
 	overlapping_genes = genes1[gene_mask,1]
 	gene_overlap = sum(gene_mask)
 	ngenes1 = length(genes1[,1])
 	ngenes2 = length(genes2[,1])
 
-	# Calculate odds ratio-----------------------------------------------------
+	# Calculate odds ratio
 	A = gene_overlap;
 	B = ngenes1-gene_overlap
 	C = ngenes2-gene_overlap
 	D = backgroundTotal-C
 	OR = (A*D)/(B*C)
 
-	# Calculate p-value from hypergeometric test-------------------------------
+	# Calculate p-value from hypergeometric test
 	hypergeo_p = sum(dhyper(gene_overlap:ngenes2, ngenes1,
 		backgroundTotal-ngenes1, ngenes2))
 

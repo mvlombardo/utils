@@ -29,7 +29,7 @@ genelistOverlap <- function(list1,list2,backgroundTotal) {
 		if (ext1=="xlsx" | ext1=="xls") {
 			genes1 = read_excel(list1)
 		} else if (ext1=="txt") {
-			genes1 = read.delim(list1)
+			genes1 = read.delim(list1, header = FALSE)
 		} else if (ext1=="csv") {
 			genes1 = read.csv(list1)
 		}# if
@@ -42,7 +42,7 @@ genelistOverlap <- function(list1,list2,backgroundTotal) {
 		if (ext2=="xlsx" | ext1=="xls") {
 			genes2 = read_excel(list2)
 		} else if (ext2=="txt") {
-			genes2 = read.delim(list2)
+			genes2 = read.delim(list2, header = FALSE)
 		} else if (ext2=="csv") {
 			genes2 = read.csv(list2)
 		}# if

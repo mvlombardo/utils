@@ -23,21 +23,29 @@ genelistOverlap <- function(list1,list2,backgroundTotal) {
 
 	# read in gene lists-------------------------------------------------------
 	# list 1
-	if (ext1=="xlsx" | ext1=="xls") {
-		genes1 = read_excel(list1)
-	} else if (ext1=="txt") {
-		genes1 = read.delim(list1)
-	} else if (ext1=="csv") {
-		genes1 = read.csv(list1)
+	if (length(list1)!=1) {
+		genes1 = data.frame(list1)
+	} else {
+		if (ext1=="xlsx" | ext1=="xls") {
+			genes1 = read_excel(list1)
+		} else if (ext1=="txt") {
+			genes1 = read.delim(list1)
+		} else if (ext1=="csv") {
+			genes1 = read.csv(list1)
+		}# if
 	}# if
 
 	# list2
-	if (ext2=="xlsx" | ext1=="xls") {
-		genes2 = read_excel(list2)
-	} else if (ext2=="txt") {
-		genes2 = read.delim(list2)
-	} else if (ext2=="csv") {
-		genes2 = read.csv(list2)
+	if (length(list2)!=1) {
+		genes2 = data.frame(list2)
+	} else {
+		if (ext2=="xlsx" | ext1=="xls") {
+			genes2 = read_excel(list2)
+		} else if (ext2=="txt") {
+			genes2 = read.delim(list2)
+		} else if (ext2=="csv") {
+			genes2 = read.csv(list2)
+		}# if
 	}# if
 
 	# Find overlapping genes---------------------------------------------------

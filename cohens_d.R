@@ -17,6 +17,8 @@ cohens_d <- function(x, y, DIM=1, SIGN=TRUE) {
 # written by mvlombardo - 28.08.2015
 #
 
+	library(matrixStats)
+	
 	# if x and y are vectors, coerce them into matrices
 	if (class(x)=="numeric" | class(x)=="integer") {
 		x <- as.matrix(x)

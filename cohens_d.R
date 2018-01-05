@@ -1,4 +1,4 @@
-cohens_d <- function(x, y, DIM=1, SIGN=TRUE) {
+cohens_d <- function(x, y, DIM=1, SIGN=TRUE, na.rm=TRUE) {
 #
 # Function will compute cohen's d effect size.
 # Generalized to work on either matrices, data frames, vectors
@@ -27,7 +27,13 @@ cohens_d <- function(x, y, DIM=1, SIGN=TRUE) {
 	if (class(y)=="numeric" | class(y)=="integer") {
 		y <- as.matrix(y)
 	}# if
-
+  
+  if (na.rm==TRUE){
+    missingValDecision = TRUE
+  } else {
+    missingValDecision = FALSE
+  }
+  
 	# n-1 for x and y
 	lx <- dim(x)[DIM]-1
 	ly <- dim(y)[DIM]-1
@@ -36,25 +42,25 @@ cohens_d <- function(x, y, DIM=1, SIGN=TRUE) {
 	if (DIM==1){
 		if (SIGN){
 			# mean difference (numerator)
-			md <- colMeans(x) - colMeans(y)
+			md <- colMeans(x, na.rm = missingValDecision) - colMeans(y, na.rm = missingValDecision)
 		} else{
 			# mean difference (numerator)
-			md <- abs(colMeans(x) - colMeans(y))
+			md <- abs(colMeans(x, na.rm = missingValDecision) - colMeans(y, na.rm = missingValDecision))
 		}# if (SIGN)
 		# pooled variance (denominator), but before any sqrt is done
-		csd <- (lx * rowVars(t(x))) + (ly * rowVars(t(y)))
+		csd <- (lx * rowVars(t(x),na.rm = missingValDecision)) + (ly * rowVars(t(y), na.rm = missingValDecision))
 
 	# else if samples are along the columns
 	} else if (DIM==2){
 		if (SIGN){
 			# mean difference (numerator)
-			md <- rowMeans(x) - rowMeans(y)
+			md <- rowMeans(x, na.rm = missingValDecision) - rowMeans(y, na.rm = missingValDecision)
 		} else{
 			# mean difference (numerator)
-			md <- abs(rowMeans(x) - rowMeans(y))
+			md <- abs(rowMeans(x, na.rm = missingValDecision) - rowMeans(y, na.rm = missingValDecision))
 		}# if (SIGN)
 		# pooled variance (denominator), but before any sqrt is done
-		csd <- lx * rowVars(x) + ly * rowVars(y)
+		csd <- lx * rowVars(x, na.rm = missingValDecision) + ly * rowVars(y, na.rm = missingValDecision)
 	}# end if
 
 	# divide pooled variance by sum of n-1 for x and y and then square root it

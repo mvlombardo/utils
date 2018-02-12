@@ -9,62 +9,54 @@
 #					 assuming each list has a header.
 #	backgroundTotal = specify number of genes in background pool
 #
+# mvlombardo 21.12.2016
 
-genelistOverlap <- function(list1,list2,backgroundTotal) {
-
+genelistOverlap <- function(list1,list2,backgroundTotal, print_result = TRUE) {
+	
 	# Read in libraries and set options
 	options(stringsAsFactors = FALSE)
 	require(readxl)
 	require(tools)
 
-	# get the file extensions of list1 and list2
+	# get the file extensions of list1 and list2-------------------------------
 	ext1 = file_ext(list1)
 	ext2 = file_ext(list2)
 
-	# read in gene lists
+	# read in gene lists-------------------------------------------------------
 	# list 1
-	if (length(list1)!=1) {
-		genes1 = data.frame(list1)
-	} else {
-		if (ext1=="xlsx" | ext1=="xls") {
-			genes1 = read_excel(list1)
-		} else if (ext1=="txt") {
-			genes1 = read.delim(list1, header = FALSE)
-		} else if (ext1=="csv") {
-			genes1 = read.csv(list1)
-		}# if
+	if (ext1=="xlsx" | ext1=="xls") {
+		genes1 = read_excel(list1)
+	} else if (ext1=="txt") {
+		genes1 = read.delim(list1)
+	} else if (ext1=="csv") {
+		genes1 = read.csv(list1)
 	}# if
 
 	# list2
-	if (length(list2)!=1) {
-		genes2 = data.frame(list2)
-	} else {
-		if (ext2=="xlsx" | ext1=="xls") {
-			genes2 = read_excel(list2)
-		} else if (ext2=="txt") {
-			genes2 = read.delim(list2, header = FALSE)
-		} else if (ext2=="csv") {
-			genes2 = read.csv(list2)
-		}# if
+	if (ext2=="xlsx" | ext1=="xls") {
+		genes2 = read_excel(list2)
+	} else if (ext2=="txt") {
+		genes2 = read.delim(list2)
+	} else if (ext2=="csv") {
+		genes2 = read.csv(list2)
 	}# if
 
-	# Find overlapping genes
+	# Find overlapping genes---------------------------------------------------
 	gene_mask = is.element(genes1[,1],genes2[,1])
 	overlapping_genes = genes1[gene_mask,1]
 	gene_overlap = sum(gene_mask)
 	ngenes1 = length(genes1[,1])
 	ngenes2 = length(genes2[,1])
 
-	# Calculate odds ratio
+	# Calculate odds ratio-----------------------------------------------------
 	A = gene_overlap;
 	B = ngenes1-gene_overlap
 	C = ngenes2-gene_overlap
 	D = backgroundTotal-C
 	OR = (A*D)/(B*C)
 
-	# Calculate p-value from hypergeometric test
-	hypergeo_p = sum(dhyper(gene_overlap:ngenes2, ngenes1,
-		backgroundTotal-ngenes1, ngenes2))
+	# Calculate p-value from hypergeometric test-------------------------------
+	hypergeo_p = sum(dhyper(gene_overlap:ngenes2,ngenes1,backgroundTotal-ngenes1,ngenes2))
 
 	# pack into result
 	result = vector(mode = "list", length = 1)
@@ -80,6 +72,8 @@ genelistOverlap <- function(list1,list2,backgroundTotal) {
 	result[[1]]$overlapping_genes = overlapping_genes
 
 	# print result to the screen and then return result
-	print(sprintf("OR = %f, p = %f",OR,hypergeo_p))
+	if (print_result){
+	  print(sprintf("OR = %f, p = %f",OR,hypergeo_p))
+	}
 	return(result)
-} # function genelistOverlap
+} # function genelistOverlap 

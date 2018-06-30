@@ -17,44 +17,45 @@ genelistOverlap <- function(list1,list2,backgroundTotal, print_result = TRUE, he
 	options(stringsAsFactors = FALSE)
 	require(readxl)
 	require(tools)
-
+  
   if (is.character(list1)){
-    genes1 = data.frame(list1)
-  } else if (is.data.frame(list1)){
-    genes1 = list1
-  } else {
     # get the file extension of list1-------------------------------
     ext1 = file_ext(list1)
-    # read in gene lists-------------------------------------------------------
-    # list 1
-    if (ext1=="xlsx" | ext1=="xls") {
-      genes1 = read_excel(list1)
-    } else if (ext1=="txt") {
-      genes1 = read.delim(list1, header = header)
-    } else if (ext1=="csv") {
-      genes1 = read.csv(list1, header = header)
-    }# if (ext1=="xlsx" | ext1=="xls") {
     
+    if (is.element(ext1,c("xlsx","xls","txt","csv"))){
+      if (ext1=="xlsx" | ext1=="xls") {
+        genes1 = read_excel(list1)
+      } else if (ext1=="txt") {
+        genes1 = read.delim(list1, header = header)
+      } else if (ext1=="csv") {
+        genes1 = read.csv(list1, header = header)
+      }# if (ext1=="xlsx" | ext1=="xls") {
+    } else {
+      genes1 = data.frame(list1)
+    }# if (is.element(ext1,c("xlsx","xls","txt","csv"))){
+  } else if (is.data.frame(list1)){
+    genes1 = list1
   }# if (is.character(list1)){
   
-  if (is.character(list2) | is.data.frame(list2)){
-    genes2 = data.frame(list2)
-  } else if (is.data.frame(list2)){
-    genes2 = list2  
-  } else {
-    # get the file extension of list2-------------------------------
+  if (is.character(list2)){
+    # get the file extension of list1-------------------------------
     ext2 = file_ext(list2)
-    # read in gene lists-------------------------------------------------------
-    # list2
-    if (ext2=="xlsx" | ext1=="xls") {
-      genes2 = read_excel(list2)
-    } else if (ext2=="txt") {
-      genes2 = read.delim(list2, header = header)
-    } else if (ext2=="csv") {
-      genes2 = read.csv(list2, header = header)
-    }# if (ext2=="xlsx" | ext1=="xls") {
-  } # if (is.character(list2)){
-
+    
+    if (is.element(ext2,c("xlsx","xls","txt","csv"))){
+      if (ext2=="xlsx" | ext2=="xls") {
+        genes2 = read_excel(list2)
+      } else if (ext2=="txt") {
+        genes2 = read.delim(list2, header = header)
+      } else if (ext1=="csv") {
+        genes2 = read.csv(list2, header = header)
+      }# if (ext1=="xlsx" | ext1=="xls") {
+    } else {
+      genes2 = data.frame(list2)
+    }# if (is.element(ext1,c("xlsx","xls","txt","csv"))){
+  } else if (is.data.frame(list2)){
+    genes2 = list2
+  }# if (is.character(list2)){
+  
 	# Find overlapping genes---------------------------------------------------
 	gene_mask = is.element(genes1[,1],genes2[,1])
 	overlapping_genes = genes1[gene_mask,1]

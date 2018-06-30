@@ -11,7 +11,7 @@
 #
 # mvlombardo 21.12.2016
 
-genelistOverlap <- function(list1,list2,backgroundTotal, print_result = TRUE) {
+genelistOverlap <- function(list1,list2,backgroundTotal, print_result = TRUE, header = FALSE) {
 	
 	# Read in libraries and set options
 	options(stringsAsFactors = FALSE)
@@ -30,9 +30,9 @@ genelistOverlap <- function(list1,list2,backgroundTotal, print_result = TRUE) {
     if (ext1=="xlsx" | ext1=="xls") {
       genes1 = read_excel(list1)
     } else if (ext1=="txt") {
-      genes1 = read.delim(list1)
+      genes1 = read.delim(list1, header = header)
     } else if (ext1=="csv") {
-      genes1 = read.csv(list1)
+      genes1 = read.csv(list1, header = header)
     }# if (ext1=="xlsx" | ext1=="xls") {
     
   }# if (is.character(list1)){
@@ -49,9 +49,9 @@ genelistOverlap <- function(list1,list2,backgroundTotal, print_result = TRUE) {
     if (ext2=="xlsx" | ext1=="xls") {
       genes2 = read_excel(list2)
     } else if (ext2=="txt") {
-      genes2 = read.delim(list2)
+      genes2 = read.delim(list2, header = header)
     } else if (ext2=="csv") {
-      genes2 = read.csv(list2)
+      genes2 = read.csv(list2, header = header)
     }# if (ext2=="xlsx" | ext1=="xls") {
   } # if (is.character(list2)){
 

@@ -75,7 +75,7 @@ genelistOverlap <- function(list1,list2,backgroundTotal, print_result = TRUE, he
 	D = backgroundTotal-C
 	OR = (A*D)/(B*C)
 
-	# Calculate p-value from hypergeometric test ------------------------------
+	# Calculate p-value from hypergeometric test
 	hypergeo_p = sum(dhyper(gene_overlap:ngenes2,ngenes1,backgroundTotal-ngenes1,ngenes2))
 
 	# pack into result

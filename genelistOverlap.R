@@ -66,7 +66,12 @@ genelistOverlap <- function(list1,list2,backgroundTotal, print_result = TRUE, he
 	# Calculate odds ratio-----------------------------------------------------
 	A = gene_overlap;
 	B = ngenes1-gene_overlap
-	C = ngenes2-gene_overlap
+	if (ngenes2==gene_overlap){
+	  # add 0.5 to ngenes2 to avoid OR = Inf
+	  C = (ngenes2+0.5)-gene_overlap
+	} else {
+	  C = ngenes2-gene_overlap
+	}
 	D = backgroundTotal-C
 	OR = (A*D)/(B*C)
 

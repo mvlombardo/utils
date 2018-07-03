@@ -19,7 +19,7 @@ genelistOverlap <- function(list1,list2,backgroundTotal, print_result = TRUE, he
 	require(tools)
   
   if (is.character(list1)){
-    # get the file extension of list1 ------------------------------
+    # get the file extension of list1
     ext1 = file_ext(list1)
     
     if (is.element(ext1,c("xlsx","xls","txt","csv"))){
@@ -38,7 +38,7 @@ genelistOverlap <- function(list1,list2,backgroundTotal, print_result = TRUE, he
   }# if (is.character(list1)){
   
   if (is.character(list2)){
-    # get the file extension of list1 ------------------------------
+    # get the file extension of list1
     ext2 = file_ext(list2)
     
     if (is.element(ext2,c("xlsx","xls","txt","csv"))){
@@ -56,14 +56,14 @@ genelistOverlap <- function(list1,list2,backgroundTotal, print_result = TRUE, he
     genes2 = list2
   }# if (is.character(list2)){
   
-	# Find overlapping genes --------------------------------------------------
+	# Find overlapping genes
 	gene_mask = is.element(genes1[,1],genes2[,1])
 	overlapping_genes = genes1[gene_mask,1]
 	gene_overlap = sum(gene_mask)
 	ngenes1 = length(genes1[,1])
 	ngenes2 = length(genes2[,1])
 
-	# Calculate odds ratio ----------------------------------------------------
+	# Calculate odds ratio
 	A = gene_overlap;
 	B = ngenes1-gene_overlap
 	if (ngenes2==gene_overlap){

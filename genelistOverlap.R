@@ -86,6 +86,7 @@ genelistOverlap <- function(list1,list2,backgroundTotal, print_result = TRUE, he
 	result[[1]]$OR = OR
 	result[[1]]$hypergeo_p = hypergeo_p
 	result[[1]]$percent_overlap_list1 = gene_overlap/ngenes1
+	result[[1]]$percent_overlap_list2 = gene_overlap/ngenes2
 	result[[1]]$gene_overlap = gene_overlap
 	result[[1]]$ngenes1 = ngenes1
 	result[[1]]$ngenes2 = ngenes2

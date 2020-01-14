@@ -33,11 +33,19 @@ ns_gene_decode <- function (image, tissue, fname2save, fdr_thresh = 0.05){
   
   # write out results
   write.csv(df, file = fname2save)
-  write.csv(pos_df_fdr, 
-            file = file.path(dirname(fname2save), 
-                             sprintf("%s_%s_%s.csv",image,tissue,"pos_t")))
-  write.csv(neg_df_fdr, 
-            file = file.path(dirname(fname2save), 
-                             sprintf("%s_%s_%s.csv",image,tissue,"neg_t")))
+  
+  # write out only if there is stuff surviving the FDR correction
+  if (dim(pos_df_fdr)[1]!=0){
+    write.csv(pos_df_fdr, 
+              file = file.path(dirname(fname2save), 
+                               sprintf("%s_%s_%s_fdr%.02f.csv",image,tissue,"pos_t",fdr_thresh)))
+  }
+  
+  # write out only if there is stuff surviving the FDR correction
+  if (dim(neg_df_fdr)[1]!=0){
+    write.csv(neg_df_fdr, 
+              file = file.path(dirname(fname2save), 
+                               sprintf("%s_%s_%s_fdr%.02f.csv",image,tissue,"neg_t",fdr_thresh)))
+  }
   
 } # ns_gene_decode.R

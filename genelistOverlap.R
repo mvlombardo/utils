@@ -64,16 +64,12 @@ genelistOverlap <- function(list1,list2,backgroundTotal, print_result = TRUE, he
 	ngenes2 = length(genes2[,1])
 
 	# Calculate odds ratio
-	A = gene_overlap;
-	B = ngenes1-gene_overlap
-	if (ngenes2==gene_overlap){
-	  # add 0.5 to ngenes2 to avoid OR = Inf
-	  C = (ngenes2+0.5)-gene_overlap
-	} else {
-	  C = ngenes2-gene_overlap
-	}
-	D = backgroundTotal-C
-	OR = (A*D)/(B*C)
+	A = gene_overlap + 0.5;
+	B = (ngenes1-gene_overlap) + 0.5 
+  C = ((ngenes2)-gene_overlap) + 0.5
+  D = (backgroundTotal- (A+B+C)) + 0.5
+  
+  OR = (A*D)/(B*C)
 
 	# Calculate p-value from hypergeometric test
 	hypergeo_p = sum(dhyper(gene_overlap:ngenes2,ngenes1,backgroundTotal-ngenes1,ngenes2))
